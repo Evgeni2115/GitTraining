@@ -1,21 +1,22 @@
 package web.dao;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import web.model.User;
 
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+
 import java.util.List;
+
+import web.model.User;
 
 @Repository
 public class UserDaoImpl implements UserDao {
 
-    @PersistenceContext
-    private EntityManager entityManager;
+    private final EntityManager entityManager;
 
-    @Override
-    public List<User> getAllUsers() {
-        return entityManager.createQuery("from User", User.class).getResultList();
+    @Autowired
+    public UserDaoImpl(EntityManager entityManager) {
+        this.entityManager = entityManager;
     }
 
     @Override
@@ -25,18 +26,9 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public void removeUser(Long id) {
-        entityManager.remove(entityManager.find(User.class, id));
-        entityManager.flush();
-    }
-
-    @Override
-    public void updateUser(Long id, User user) {
-        User edit = entityManager.find(User.class, id);
-        edit.setName(user.getName());
-        edit.setLastName(user.getLastName());
-        edit.setAge(user.getAge());
-        edit.setAge(user.getAge());
+    @SuppressWarnings("unchecked")
+    public List<User> getAllUsers() {
+        return entityManager.createQuery(" FROM User").getResultList();
 
     }
 
@@ -44,4 +36,20 @@ public class UserDaoImpl implements UserDao {
     public User getUser(Long id) {
         return entityManager.find(User.class, id);
     }
+
+    @Override
+    public void editUser(Long id, User user) {
+        User edit = entityManager.find(User.class, id);
+        edit.setName(user.getName());
+        edit.setLastName(user.getLastName());
+        edit.setAge(user.getAge());
+
+    }
+
+    @Override
+    public void removeUser(Long id) {
+        entityManager.remove(entityManager.find(User.class, id));
+        entityManager.flush();
+    }
 }
+
