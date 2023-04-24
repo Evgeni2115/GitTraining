@@ -35,12 +35,12 @@ public class UserController {
     @PostMapping("/input")
     public String inputUser(@ModelAttribute("user") User user) {
 
-        userservice.addUser(user);
+        userservice.createUser(user);
         return "redirect:users";
     }
 
     @GetMapping("/{id}/edit")
-    public String editUser(@PathVariable("id") Long id, Model model) {
+    public String displayTheEditPage(@PathVariable("id") Long id, Model model) {
 
         model.addAttribute("editable_user", userservice.getUser(id));
         return "edit";
@@ -49,7 +49,7 @@ public class UserController {
     @PatchMapping("/{id}")
     public String edit(@ModelAttribute("editable_user") User user, @PathVariable("id") Long id) {
 
-        userservice.editUser(id, user);
+        userservice.updateUser(id, user);
         return "redirect:users";
     }
 
