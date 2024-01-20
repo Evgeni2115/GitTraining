@@ -13,4 +13,6 @@ public interface UserDao {
     void updateUser(Long id, User user);
 
     void removeUser(Long id);
+
+    User getUserFromEpkId(Long id);
 }
